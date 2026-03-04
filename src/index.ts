@@ -7,6 +7,13 @@ import {
   QueryFilter,
 } from "casafari";
 
+export type DataWithId = {
+  count: Data["count"];
+  next: Data["next"];
+  previous: Data["previous"];
+  results: (Data["results"] & { _id: string })[];
+};
+
 export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
   const config = { headers: { Authorization: token } };
 
@@ -36,7 +43,7 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
 
   const getFeed = async (id: string, params?: Partial<QueryFilter>) =>
     (
-      await axios.get<Data>(`${baseUrl}/v1/feeds/${id}`, {
+      await axios.get<DataWithId>(`${baseUrl}/v1/feeds/${id}`, {
         ...config,
         params,
       })
