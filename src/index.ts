@@ -11,7 +11,7 @@ export type DataWithId = {
   count: Data["count"];
   next: Data["next"];
   previous: Data["previous"];
-  results: (Data["results"] & { _id: string })[];
+  results: (Data["results"][0] & { _id: string })[];
 };
 
 export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
