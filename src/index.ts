@@ -19,14 +19,14 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
 
   const createFeed = async (body: FeedPayload) =>
     (
-      await axios.post<FeedResponseOnCreate>(
+      await axios.post<FeedResponseOnCreate & { _id: string }>(
         `${baseUrl}/v1/feeds`,
         body,
         config,
       )
     ).data;
 
-  const deleteFeed = async (id: number) =>
+  const deleteFeed = async (id: string) =>
     (
       await axios.delete<{ success: boolean }>(
         `${baseUrl}/v1/feeds/${id}`,
@@ -34,7 +34,7 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
       )
     ).data;
 
-  const getFeed = async (id: number, params?: Partial<QueryFilter>) =>
+  const getFeed = async (id: string, params?: Partial<QueryFilter>) =>
     (
       await axios.get<Data>(`${baseUrl}/v1/feeds/${id}`, {
         ...config,
