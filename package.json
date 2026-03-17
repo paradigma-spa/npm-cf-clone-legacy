@@ -1,6 +1,6 @@
 {
   "name": "cf-clone",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Cf api legacy",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
