@@ -10,6 +10,11 @@ import {
 export type InternFeedEnvironment = {
   environment: "development" | "production" | "stage";
 };
+export type ContactsInfo = {
+  name: string | undefined;
+  email: string | undefined;
+  phone: string;
+};
 
 export type DataWithId = {
   count: Data["count"];
@@ -17,6 +22,7 @@ export type DataWithId = {
   previous: Data["previous"];
   results: (Data["results"][0] & { _id: string } & {
     coordinates: { type: "Point"; coordinates: [number, number] };
+    contacts_info: ContactsInfo;
   })[];
 };
 
