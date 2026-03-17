@@ -7,6 +7,10 @@ import {
   QueryFilter,
 } from "casafari";
 
+export type InternFeedEnvironment = {
+  enviroment: "development" | "production" | "stage";
+};
+
 export type DataWithId = {
   count: Data["count"];
   next: Data["next"];
@@ -24,7 +28,7 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
   const getFeeds = async () =>
     (await axios.get<Feed[]>(`${baseUrl}/v1/feeds`, config)).data;
 
-  const createFeed = async (body: FeedPayload) =>
+  const createFeed = async (body: FeedPayload & InternFeedEnvironment) =>
     (
       await axios.post<FeedResponseOnCreate & { _id: string }>(
         `${baseUrl}/v1/feeds`,
