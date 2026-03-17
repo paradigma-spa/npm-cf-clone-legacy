@@ -26,7 +26,12 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
   };
 
   const getFeeds = async () =>
-    (await axios.get<Feed[]>(`${baseUrl}/v1/feeds`, config)).data;
+    (
+      await axios.get<(Feed & InternFeedEnvironment)[]>(
+        `${baseUrl}/v1/feeds`,
+        config,
+      )
+    ).data;
 
   const createFeed = async (body: FeedPayload & InternFeedEnvironment) =>
     (
