@@ -8,7 +8,7 @@ import {
 } from "casafari";
 
 export type InternFeedEnvironment = {
-  enviroment: "development" | "production" | "stage";
+  environment: "development" | "production" | "stage";
 };
 
 export type DataWithId = {
