@@ -4,6 +4,7 @@ import {
   FeedPayload,
   FeedResponseOnCreate,
   QueryFilter,
+  Data,
 } from "casafari";
 
 export type InternFeedEnvironment = {
@@ -21,22 +22,13 @@ export type FeedCount = {
   count: number;
 };
 
-export type FeedResult = {
+export type FeedResult = Omit<
+  Data["results"][0],
+  "location" | "coordinates" | "alert_date_and_time"
+> & {
   _id: string;
-  alert_id: number;
-  type: string;
-  sale_status: string;
-  sale_price: number;
-  sale_price_per_sqm: number;
-  bedrooms: number;
-  total_area: number;
-  address: string;
   location: { location_id: number; name: string };
   coordinates: { type: "Point"; coordinates: [number, number] };
-  agency: string;
-  source_name: string;
-  contacts_info: ContactsInfo;
-  thumbnails: string[];
   alert_date_and_time: string;
   createdAt: string;
   updatedAt: string;
@@ -91,9 +83,8 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
     ).data;
 
   const getFeedCount = async (id: string) =>
-    (
-      await axios.get<FeedCount>(`${baseUrl}/v1/feeds/${id}/count`, config)
-    ).data;
+    (await axios.get<FeedCount>(`${baseUrl}/v1/feeds/${id}/count`, config))
+      .data;
 
   const getFeedResults = async (id: string, params?: Partial<QueryFilter>) =>
     (
