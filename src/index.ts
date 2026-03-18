@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  Data,
   Feed,
   FeedPayload,
   FeedResponseOnCreate,
@@ -16,14 +15,47 @@ export type ContactsInfo = {
   phone: string;
 };
 
-export type DataWithId = {
-  count: Data["count"];
-  next: Data["next"];
-  previous: Data["previous"];
-  results: (Data["results"][0] & { _id: string } & {
-    coordinates: { type: "Point"; coordinates: [number, number] };
-    contacts_info: ContactsInfo;
-  })[];
+export type FeedCount = {
+  id: string;
+  name: string;
+  count: number;
+};
+
+export type FeedResult = {
+  _id: string;
+  alert_id: number;
+  type: string;
+  sale_status: string;
+  sale_price: number;
+  sale_price_per_sqm: number;
+  bedrooms: number;
+  total_area: number;
+  address: string;
+  location: { location_id: number; name: string };
+  coordinates: { type: "Point"; coordinates: [number, number] };
+  agency: string;
+  source_name: string;
+  contacts_info: ContactsInfo;
+  thumbnails: string[];
+  alert_date_and_time: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type FeedResults = {
+  id: string;
+  name: string;
+  filter: {
+    operation: string;
+    types: string[];
+    custom_locations: Array<Array<unknown>>;
+    statuses: string[];
+    with_agencies: string[];
+    without_agencies: string[];
+  };
+  next: string | null;
+  previous: string | null;
+  results: FeedResult[];
 };
 
 export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
@@ -58,16 +90,22 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
       )
     ).data;
 
-  const getFeed = async (id: string, params?: Partial<QueryFilter>) =>
+  const getFeedCount = async (id: string) =>
     (
-      await axios.get<DataWithId>(`${baseUrl}/v1/feeds/${id}`, {
+      await axios.get<FeedCount>(`${baseUrl}/v1/feeds/${id}/count`, config)
+    ).data;
+
+  const getFeedResults = async (id: string, params?: Partial<QueryFilter>) =>
+    (
+      await axios.get<FeedResults>(`${baseUrl}/v1/feeds/${id}/results`, {
         ...config,
         params,
       })
     ).data;
 
   return {
-    getFeed,
+    getFeedCount,
+    getFeedResults,
     deleteFeed,
     createFeed,
     getFeeds,
