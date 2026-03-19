@@ -3,7 +3,6 @@ import {
   Feed,
   FeedPayload,
   FeedResponseOnCreate,
-  QueryFilter,
   Data,
   Coordinate,
 } from "casafari";
@@ -29,6 +28,11 @@ export type FeedResult = Omit<
   updatedAt: string;
 };
 
+export type FeedResultsParams = {
+  limit?: number;
+  cursor?: string;
+};
+
 export type FeedResults = {
   id: string;
   name: string;
@@ -40,8 +44,7 @@ export type FeedResults = {
     with_agencies: string[];
     without_agencies: string[];
   };
-  next: string | null;
-  previous: string | null;
+  nextCursor: string | null;
   results: FeedResult[];
 };
 
@@ -81,7 +84,7 @@ export default ({ token, baseUrl }: { token: string; baseUrl: string }) => {
     (await axios.get<FeedCount>(`${baseUrl}/v1/feeds/${id}/count`, config))
       .data;
 
-  const getFeedResults = async (id: string, params?: Partial<QueryFilter>) =>
+  const getFeedResults = async (id: string, params?: FeedResultsParams) =>
     (
       await axios.get<FeedResults>(`${baseUrl}/v1/feeds/${id}/results`, {
         ...config,
