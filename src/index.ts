@@ -5,15 +5,11 @@ import {
   FeedResponseOnCreate,
   QueryFilter,
   Data,
+  Coordinate,
 } from "casafari";
 
 export type InternFeedEnvironment = {
   environment: "development" | "production" | "stage";
-};
-export type ContactsInfo = {
-  name: string | undefined;
-  email: string | undefined;
-  phone: string;
 };
 
 export type FeedCount = {
@@ -24,10 +20,9 @@ export type FeedCount = {
 
 export type FeedResult = Omit<
   Data["results"][0],
-  "location" | "coordinates" | "alert_date_and_time"
+  "coordinates" | "alert_date_and_time"
 > & {
   _id: string;
-  location: { location_id: number; name: string };
   coordinates: { type: "Point"; coordinates: [number, number] };
   alert_date_and_time: string;
   createdAt: string;
@@ -40,7 +35,7 @@ export type FeedResults = {
   filter: {
     operation: string;
     types: string[];
-    custom_locations: Array<Array<unknown>>;
+    custom_locations: Array<Coordinate[]>;
     statuses: string[];
     with_agencies: string[];
     without_agencies: string[];
